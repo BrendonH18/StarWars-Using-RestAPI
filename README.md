@@ -1,8 +1,48 @@
-# Getting Started with Create React App
+# Expense Tracker with React
+
+First app using React. Demonstrates conceptual knowledge of key React features.
+
+## Personal Note
+
+At first, React posed a significant challenge. After struggling to initiate the boilerplate app using React's tutorial and deploy it using Heroku, I took some time to look over the code and find useful patterns. The end result was functional and implemented as many "best practices" as possible. I can see how React could be used in a variety of circumstances.   
+
+## Summary
+
+[See the Live Render](https://starwarsapidemobhall.herokuapp.com/)
+
+![image](https://user-images.githubusercontent.com/80381428/133524139-f078753a-89e2-4aa9-8740-a18113e57dd1.png)
+
+- This app use React to structure component elements and render information in real time. It also utilizes local storage to save data between instances.
+
+- This project is a good example of:
+
+FUNCTIONS:
+ - Import
+ - Lifecycle
+   - componentDidMount()
+   - componentDidUpdate()
+ - State/Props
+
+CONCEPTS:
+- Component Structure
+  - Class-Based Components
+  - Functional Components
+  - Lifecycle Methods
+- Event/Submit handling
+- Rest/Spread Operator
+- Passing props (state and functions) to lower levels
+  - Deconstructed props for readability
+- Using "state" to update key information
+- Referencing an array in "state"
+- Using BootStrap 5 to format elements
+
+## Author
+Brendon Hall - Full Stack Software Developer [LinkedIn](https://www.linkedin.com/in/brendonphall/)
+
+
+## Other React Scripts
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-## Available Scripts
 
 In the project directory, you can run:
 
