@@ -1,6 +1,6 @@
-# Expense Tracker with React
+# Star Wars with React and Restful API
 
-First app using React. Demonstrates conceptual knowledge of key React features.
+Second app using React. Demonstrates conceptual knowledge of key React features while utilizing a Restful API.
 
 ## Personal Note
 
