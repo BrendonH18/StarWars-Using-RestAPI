@@ -1,11 +1,12 @@
 import React from "react";
 
-const DisplayForm = () => {
+const DisplayForm = ( handleSearch ) => {
 
   return(
     <div className="justify-content-md-center">
         <div>
-          <input 
+          {handleSearch}
+          {/* <input 
             type="text" 
             placeholder="Search..." 
             name="search" 
@@ -14,7 +15,7 @@ const DisplayForm = () => {
             // onChange={handleChange}
             // value={state.expenseDate}
             required
-            />
+            /> */}
         </div>
       </div>
   )
