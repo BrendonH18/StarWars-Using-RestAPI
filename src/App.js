@@ -4,9 +4,13 @@ import DisplayHeader from './components/Header';
 import DisplayForm from './components/Form';
 import DisplayTable from './components/Table';
 import DisplayFooter from './components/Footer';
+import axios from 'axios';
 
 function App() {
-  
+  const [Search, setSearch] = useState('')
+  const [LowerCharacterNumber, setLowerCharacterNumber] = useState(0)
+  const [imageURL, setImageURL] = useState('')
+
   const [Number, setNumber] = useState('')
   const [Name, setName] = useState('')
   const [Birthday, setBirthday] = useState('')
@@ -14,79 +18,94 @@ function App() {
   const [Mass, setMass] = useState('')
   const [HomeWorld, setHomeWorld] = useState('')
   const [Species, setSpecies] = useState('')
-  const [CharacterArray, setCharacterArray] = useState([])
+  const [CharacterArray, setCharacterArray] = useState([1,2,3])
 
 
 function handleSearch(e) {
-  const [SearchValue, setSearch] = useState('')
-  const handle = (e) => {
-    const SearchUpdate = e.target
-    console.log(SearchUpdate)
-    setSearch(SearchUpdate)
-
-    return <input 
-    type="text" 
-    placeholder="Search..." 
-    name="search" 
-    id="search" 
-    className="form-control"
-    onChange={handle}
-    value={SearchValue}
-    required
-    />
-  }
+  setSearch(e.target.value)
 }
 
-function LogButtonClicks() {  
-  const [count, setCount] = useState(0)
-  const handle = () => {
-    const updatedCount = count + 1
-    console.log(`Clicked ${updatedCount} times.`)
-    setCount(updatedCount)
-  }
-  console.log('I rendered!')
-  return <button onClick={handle}>Click Me</button>
+function getPage(e) {
+  e.target.value === "next10"
+    ? setLowerCharacterNumber(LowerCharacterNumber + 10)
+    : setLowerCharacterNumber(LowerCharacterNumber - 10)
+}
+
+function isPreviousActive(number) {
+  return (
+    (number === 0)
+      ? false
+      : true)
+}
+
+function formatGetRequest(attribute, number) {
+  return `https://swapi.dev/api/${attribute}/${number}`
+}
+
+function batchTableGetRequests(number, attribute) {
+  let elementArray = []  
+  for (let index = number; index < number + 10; index++) {
+    elementArray = [...elementArray, formatGetRequest(attribute, index)]
+    }
+  return elementArray
+}
+
+console.log(batchTableGetRequests(0,"people"))
+
+
+// https://stackoverflow.com/questions/56532652/axios-get-then-in-a -for-loop
+async function getElements(location, attribute, id) {
+  await Promise.all(
+    batchTableGetRequests(0, "people").map(request => axios.get(request))
+   )
+  .then(rawResponse => {
+    console.log(rawResponse)
+    let valuesArray = []
+    let number = 0
+    rawResponse.forEach(element => {
+      number += 1
+      console.log(element)
+      let characterDetail = {
+        id: number, 
+        name: element.data.name,
+        birthyear: element.data.birth_year,
+        height: element.data.height,
+        mass: element.data.mass,
+        homeworld: element.data.homeworld,
+        species: element.data.species
+      }
+      valuesArray = [...valuesArray, characterDetail]
+    })
+    return setCharacterArray(valuesArray)
+  })
+  .catch(error => {
+    console.log(error)
+  })
 }
 
 
-  // useEffect(() => {
-  //  handleChange() 
-  // })
-  //   function handleChange(change)
-  //   return () => {}
-  // },[])
-
-  // componentDidMount() {
-  //   this.setState({
-  //     expenseArray: JSON.parse(localStorage.getItem('expenses')) || []
-  //   })
-  // }
-  
-  // componentDidUpdate(prevProps, prevState) {
-  //   if(this.state.expenseArray !== prevState.expenseArray.lengeth) {
-  //     localStorage.setItem('expenses', JSON.stringify(this.state.expenseArray))
-  //   }
-  // }
-
-  // const handleChange = (e) => {
-  //   const { name, value } = e.target;
-  //   console.log('name: ', name, 'value: ', value);
-  //   this.setState({
-  //     [name]: value
-  //   })
-  // }
+useEffect(() => {
+  getElements('table','people', 1)
+})
 
 
   return (
     <div>
+
+      {/* <img alt="" src={imageURL}/> */}
+
       <DisplayHeader />
-      {LogButtonClicks()}
+      {/* {LogButtonClicks()} */}
       <DisplayForm 
         handleSearch={handleSearch}
+        Search={Search}
       />
 
-      <DisplayTable />
-      <DisplayFooter />
+      <DisplayTable CharacterArray={CharacterArray}/>
+      <DisplayFooter 
+        getPage={getPage}
+        isPreviousActive={isPreviousActive(LowerCharacterNumber)}  
+      />
       
     </div>
   );

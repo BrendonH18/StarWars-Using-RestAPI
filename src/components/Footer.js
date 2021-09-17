@@ -1,15 +1,23 @@
 import React from "react";
 
-const DisplayFooter = () => {
+const DisplayFooter = ({ getPage, isPreviousActive }) => {
 
   return(
     <div>
-      <button type="" onClick={() => {}}>
-        {"Prev 10 <-----"}
-      </button>
-
-      <button type="" onClick={() => {}}>
-        {"-----> Next 10"}
+      {(isPreviousActive === false)
+        ? <div></div>
+        : <button 
+            type="" 
+            onClick={getPage}
+            value='previous10'>
+              {"Prev 10 <-----"}
+          </button>
+      }
+      <button 
+        type=""
+        onClick={getPage}
+        value='next10'>
+          {"-----> Next 10"}
       </button>
     </div>
   )

@@ -2,7 +2,7 @@ import React from "react";
 // import { Row } from "react-bootstrap";
 import Rows from "./Rows";
 
-const DisplayTable = () => {
+const DisplayTable = ({ CharacterArray }) => {
 
   return(
     <table striped boardered hover varient="dark">
@@ -17,7 +17,9 @@ const DisplayTable = () => {
             <th >Species</th>
           </tr>
         </thead>
-        <Rows />
+        <Rows 
+          CharacterArray={CharacterArray}
+        />
       </table>
   )
 }
