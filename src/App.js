@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DisplayHeader from './components/Header';
 import DisplayForm from './components/Form';
 import DisplayTable from './components/Table';
@@ -9,17 +9,18 @@ import axios from 'axios';
 function App() {
   const [Search, setSearch] = useState('')
   const [LowerCharacterNumber, setLowerCharacterNumber] = useState(0)
-  const [imageURL, setImageURL] = useState('')
+  const [characterObject, setCharacterObject] = useState(null)
 
-  const [Number, setNumber] = useState('')
-  const [Name, setName] = useState('')
-  const [Birthday, setBirthday] = useState('')
-  const [Height, setHeight] = useState('')
-  const [Mass, setMass] = useState('')
-  const [HomeWorld, setHomeWorld] = useState('')
-  const [Species, setSpecies] = useState('')
-  const [CharacterArray, setCharacterArray] = useState([1,2,3])
-
+  const blankCharacterObject = [{
+    key: "",
+    birthday: '',
+    fullname: '',
+    height: '',
+    home: '',
+    mass : '',
+    species : ''
+  }
+]
 
 function handleSearch(e) {
   setSearch(e.target.value)
@@ -42,71 +43,87 @@ function formatGetRequest(attribute, number) {
   return `https://swapi.dev/api/${attribute}/${number}`
 }
 
-function batchTableGetRequests(number, attribute) {
-  let elementArray = []  
-  for (let index = number; index < number + 10; index++) {
-    elementArray = [...elementArray, formatGetRequest(attribute, index)]
-    }
-  return elementArray
-}
-
-console.log(batchTableGetRequests(0,"people"))
-
-
-// https://stackoverflow.com/questions/56532652/axios-get-then-in-a -for-loop
-async function getElements(location, attribute, id) {
-  await Promise.all(
-    batchTableGetRequests(0, "people").map(request => axios.get(request))
-   )
-  .then(rawResponse => {
-    console.log(rawResponse)
-    let valuesArray = []
-    let number = 0
-    rawResponse.forEach(element => {
-      number += 1
-      console.log(element)
-      let characterDetail = {
-        id: number, 
-        name: element.data.name,
-        birthyear: element.data.birth_year,
-        height: element.data.height,
-        mass: element.data.mass,
-        homeworld: element.data.homeworld,
-        species: element.data.species
-      }
-      valuesArray = [...valuesArray, characterDetail]
-    })
-    return setCharacterArray(valuesArray)
-  })
-  .catch(error => {
-    console.log(error)
-  })
-}
-
-
 useEffect(() => {
-  getElements('table','people', 1)
-})
+  getTableData()
+}, [LowerCharacterNumber])
 
+
+async function getTableData() {
+  setCharacterObject(null)
+  let counter = LowerCharacterNumber
+  let newTable = []
+  do {
+    counter = counter + 1
+    let detail = await getCharacterData1(counter)
+    .then(getCharacterData2)
+    .catch(err => console.log(err))
+    if (detail !== undefined) newTable = ([...newTable, detail])
+  } while (newTable.length < 10 && counter < LowerCharacterNumber + 20);
+  setCharacterObject(newTable)
+}
+
+async function getCharacterData1(number) {
+  let copyCharacterObject = {}
+  await axios.get(formatGetRequest('people',number)).then(results => {
+    results.data.species.length === 0 
+      ? copyCharacterObject.species = {value: false} 
+      : copyCharacterObject.species = {value: true, address: results.data.species}
+    
+    results.data.homeworld.length === 0 
+      ? copyCharacterObject.home = {value: false} 
+      : copyCharacterObject.home = {value: true, address: results.data.homeworld}
+    
+    copyCharacterObject.key = number
+    copyCharacterObject.fullname = results.data.name
+    copyCharacterObject.birthday = results.data.birth_year
+    copyCharacterObject.height = results.data.height
+    copyCharacterObject.mass = results.data.mass
+  })
+  return Promise.resolve(copyCharacterObject)
+}
+
+async function getCharacterData2(newCharacterObject) {
+  let copyCharacterObject = {...newCharacterObject}
+  if (copyCharacterObject.species.value) {
+    let species = await getCharacterData3(copyCharacterObject)
+    copyCharacterObject.species = species
+  } else {
+    copyCharacterObject.species = ""
+  }
+  if (copyCharacterObject.home.value) {
+    await axios.get(copyCharacterObject.home.address).then(home => copyCharacterObject.home = home.data.name)
+  }
+  return Promise.resolve(copyCharacterObject)
+}
+
+async function getCharacterData3 (newCharacterObject) {
+  let copyCharacterObject = {...newCharacterObject}
+  let speciesList = []
+  await copyCharacterObject.species.address.forEach(element => {
+     axios.get(element).then(results => speciesList.push(results.data.name))
+  });
+
+  // How do I "join" the elements of [speciesList] with ", "?
+  // I tried speciesList.join(", ") and it returned "undefined"
+  // I also tried speciesList[0] and it returned ""
+
+  return speciesList
+}
 
   return (
     <div>
-
-      {/* <img alt="" src={imageURL}/> */}
-
       <DisplayHeader />
-      {/* {LogButtonClicks()} */}
       <DisplayForm 
         handleSearch={handleSearch}
         Search={Search}
       />
-
-      <DisplayTable CharacterArray={CharacterArray}/>
+      <DisplayTable 
+      characterObject={characterObject === null ? blankCharacterObject : characterObject}
+      />
       <DisplayFooter 
         getPage={getPage}
         isPreviousActive={isPreviousActive(LowerCharacterNumber)}  
       />
-      
     </div>
   );
 }

@@ -2,10 +2,11 @@ import React from "react";
 // import { Row } from "react-bootstrap";
 import Rows from "./Rows";
 
-const DisplayTable = ({ CharacterArray }) => {
+const DisplayTable = ({ characterObject }) => {
 
   return(
-    <table striped boardered hover varient="dark">
+    // <table striped boardered hover varient="dark">
+    <table >
         <thead>
           <tr>
             <th >#</th>
@@ -17,9 +18,11 @@ const DisplayTable = ({ CharacterArray }) => {
             <th >Species</th>
           </tr>
         </thead>
+        <tbody>
         <Rows 
-          CharacterArray={CharacterArray}
+          characterObject={characterObject}
         />
+        </tbody>
       </table>
   )
 }
