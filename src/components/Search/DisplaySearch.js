@@ -1,25 +1,22 @@
 import React, { useState } from "react";
-import { Modal, Button } from "react-bootstrap";
-import DisplayRows from "../Rows";
 import DisplaySearchHeaders from "./Headers";
 import DisplaySearchRows from "./Rows";
 
 const DisplaySearch = ({ search, searchResults }) => {
   const [show, setShow] = useState(false);
-
-  // const handleClose = () => setShow(false);
-  // const handleShow = () => setShow(true);
-  // console.log("Resultes: ", searchResults)
-  let keys = searchResults === 0 ? 0 : Object.keys(searchResults[0])
-  // console.log("keys: ", keys)
-  if (keys === 0) {
+  let keys = 0
+  let isNoData
+  let isArray = Array.isArray(searchResults)
+  if(isArray) isNoData = searchResults.length === 0
+  if (!isNoData) {keys = searchResults === 0 ? 0 : Object.keys(searchResults[0])} 
+  if (keys === 0 || isNoData) {
     if(show === true) setShow(false)
   } else {
     if(show === false) setShow(true)}
 
-  if(show
-    // keys !== 0
-    ) {return (
+
+  if(show) {
+    return (
     <>
         <div>{`Search: "${search.searchTerm}" in ${search.attribute}`}</div>
         <br/>
@@ -41,15 +38,18 @@ const DisplaySearch = ({ search, searchResults }) => {
 
     </>
   );
+} else if (isNoData) {
+  return(
+    <div>
+    No Data Returned from Search -_- Sorry!
+    </div>
+  )
 } else {
   return(
     <>
     </>
   )
 }
-
-
-
 }
 
 export default DisplaySearch
