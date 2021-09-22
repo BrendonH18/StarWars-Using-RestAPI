@@ -4,12 +4,15 @@ import DisplayHeader from './components/Header';
 import DisplayForm from './components/Form';
 import DisplayTable from './components/Table';
 import DisplayFooter from './components/Footer';
+import DisplaySearch from './components/Search/DisplaySearch';
+
 import axios from 'axios';
 
 function App() {
-  const [Search, setSearch] = useState('')
+  const [search, setSearch] = useState({attribute: '', searchTerm: ''})
   const [LowerCharacterNumber, setLowerCharacterNumber] = useState(0)
-  const [characterObject, setCharacterObject] = useState(null)
+  const [characterObjectDisplay, setCharacterObjectDisplay] = useState(null)
+  const [searchResults, setSearchResults] = useState(0) 
 
   const blankCharacterObject = [{
     key: "",
@@ -22,14 +25,21 @@ function App() {
   }
 ]
 
-function handleSearch(e) {
-  setSearch(e.target.value)
+async function handleSearch(e) {
+  e.preventDefault()
+  console.log("search: ", search)
+  await axios.get(`https://swapi.dev/api/${search.attribute}/?search=${search.searchTerm}`)
+  .then(result => setSearchResults(result.data.results))
+  .catch(err => console.log(err))
 }
+
+
 
 function getPage(e) {
   e.target.value === "next10"
     ? setLowerCharacterNumber(LowerCharacterNumber + 10)
     : setLowerCharacterNumber(LowerCharacterNumber - 10)
+  // getTableData()
 }
 
 function isPreviousActive(number) {
@@ -44,34 +54,34 @@ function formatGetRequest(attribute, number) {
 }
 
 useEffect(() => {
-  getTableData()
+  getTableData('people')
 }, [LowerCharacterNumber])
 
 
-async function getTableData() {
-  setCharacterObject(null)
+async function getTableData(attribute) {
+  setCharacterObjectDisplay(null)
   let counter = LowerCharacterNumber
   let newTable = []
-  do {
-    counter = counter + 1
-    let detail = await getCharacterData1(counter)
+  while (newTable.length < 10 && counter < LowerCharacterNumber + 20) {counter = counter + 1
+    let detail = await getCharacterData1(attribute , counter)
     .then(getCharacterData2)
     .catch(err => console.log(err))
     if (detail !== undefined) newTable = ([...newTable, detail])
-  } while (newTable.length < 10 && counter < LowerCharacterNumber + 20);
-  setCharacterObject(newTable)
+    console.log("previous: ", counter)
+  }
+  setCharacterObjectDisplay(newTable)
 }
 
-async function getCharacterData1(number) {
+async function getCharacterData1(category, number) {
   let copyCharacterObject = {}
-  await axios.get(formatGetRequest('people',number)).then(results => {
+  await axios.get(formatGetRequest(category, number)).then(results => {
     results.data.species.length === 0 
-      ? copyCharacterObject.species = {value: false} 
-      : copyCharacterObject.species = {value: true, address: results.data.species}
+      ? copyCharacterObject.species = {isPresent: false} 
+      : copyCharacterObject.species = {isPresent: true, address: results.data.species}
     
     results.data.homeworld.length === 0 
-      ? copyCharacterObject.home = {value: false} 
-      : copyCharacterObject.home = {value: true, address: results.data.homeworld}
+      ? copyCharacterObject.home = {isPresent: false} 
+      : copyCharacterObject.home = {isPresent: true, address: results.data.homeworld}
     
     copyCharacterObject.key = number
     copyCharacterObject.fullname = results.data.name
@@ -82,22 +92,22 @@ async function getCharacterData1(number) {
   return Promise.resolve(copyCharacterObject)
 }
 
-async function getCharacterData2(newCharacterObject) {
-  let copyCharacterObject = {...newCharacterObject}
-  if (copyCharacterObject.species.value) {
+async function getCharacterData2(copyCharacterObject) {
+  // let copyCharacterObject = {...newCharacterObject}
+  if (copyCharacterObject.species.isPresent) {
     let species = await getCharacterData3(copyCharacterObject)
     copyCharacterObject.species = species
   } else {
-    copyCharacterObject.species = ""
+    copyCharacterObject.species = "---"
   }
-  if (copyCharacterObject.home.value) {
+  if (copyCharacterObject.home.isPresent) {
     await axios.get(copyCharacterObject.home.address).then(home => copyCharacterObject.home = home.data.name)
   }
   return Promise.resolve(copyCharacterObject)
 }
 
-async function getCharacterData3 (newCharacterObject) {
-  let copyCharacterObject = {...newCharacterObject}
+async function getCharacterData3 (copyCharacterObject) {
+  // let copyCharacterObject = {...newCharacterObject}
   let speciesList = []
   await copyCharacterObject.species.address.forEach(element => {
      axios.get(element).then(results => speciesList.push(results.data.name))
@@ -115,15 +125,21 @@ async function getCharacterData3 (newCharacterObject) {
       <DisplayHeader />
       <DisplayForm 
         handleSearch={handleSearch}
-        Search={Search}
-      />
+        search={search}
+        setSearch ={setSearch}
+        setSearchResults={setSearchResults}
+        />
       <DisplayTable 
-      characterObject={characterObject === null ? blankCharacterObject : characterObject}
-      />
+      characterObject={characterObjectDisplay === null ? blankCharacterObject : characterObjectDisplay}
+        />
       <DisplayFooter 
         getPage={getPage}
         isPreviousActive={isPreviousActive(LowerCharacterNumber)}  
-      />
+        />
+      <DisplaySearch 
+        search={search}
+        searchResults={searchResults}
+        />
     </div>
   );
 }

@@ -6,7 +6,7 @@ const DisplayTable = ({ characterObject }) => {
 
   return(
     // <table striped boardered hover varient="dark">
-    <table >
+    <table className="table" varient="dark">
         <thead>
           <tr>
             <th >#</th>
