@@ -1,9 +1,9 @@
 import React from "react";
 
 const DisplaySearchHeaders = ({ keys }) => {
-  return keys.map(column => {
+  return keys.map(key => {
     return(
-      <th key={column}>{column}</th>
+      <th key={key}>{key}</th>
       )
     })
 } 

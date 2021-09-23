@@ -1,6 +1,6 @@
 import React from "react";
 
-const DisplayForm = ({ handleSearch, search, setSearch, setSearchResults }) => {
+const DisplayForm = ({ handleSearch, search, setSearch, setSearchResponse }) => {
 
   return(
     <form 
@@ -15,7 +15,6 @@ const DisplayForm = ({ handleSearch, search, setSearch, setSearchResults }) => {
             id="search" 
             className="form-control"
             onChange={(e) => setSearch({...search, searchTerm: e.target.value})}
-            // value={search.searchTerm}
             required
             />
         </div>
@@ -54,7 +53,7 @@ const DisplayForm = ({ handleSearch, search, setSearch, setSearchResults }) => {
 
         <button 
           type="button"
-          onClick={() => {setSearchResults(0)}}
+          onClick={() => {setSearchResponse(0)}}
           >
           Clear Results
         </button>

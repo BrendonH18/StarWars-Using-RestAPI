@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-import DisplaySearchHeaders from "./Headers";
-import DisplaySearchRows from "./Rows";
+import DisplaySearchHeaders from "./SearchHeaders";
+import DisplaySearchRows from "./SearchRows";
 
-const DisplaySearch = ({ search, searchResults }) => {
+const DisplaySearch = ({ search, searchResponse }) => {
   const [show, setShow] = useState(false);
   let keys = 0
   let isNoData
-  let isArray = Array.isArray(searchResults)
-  if(isArray) isNoData = searchResults.length === 0
-  if (!isNoData) {keys = searchResults === 0 ? 0 : Object.keys(searchResults[0])} 
+  let isArray = Array.isArray(searchResponse)
+  if(isArray) isNoData = searchResponse.length === 0
+  if (!isNoData) {keys = searchResponse === 0 ? 0 : Object.keys(searchResponse[0])} 
   if (keys === 0 || isNoData) {
     if(show === true) setShow(false)
   } else {
@@ -30,7 +30,7 @@ const DisplaySearch = ({ search, searchResults }) => {
         </thead>
         <tbody>
         <DisplaySearchRows
-          searchResults={searchResults}
+          searchResponse={searchResponse}
           keys={keys}
           />
         </tbody>

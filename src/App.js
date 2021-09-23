@@ -12,7 +12,7 @@ function App() {
   const [search, setSearch] = useState({attribute: '', searchTerm: ''})
   const [LowerCharacterNumber, setLowerCharacterNumber] = useState(0)
   const [characterObjectDisplay, setCharacterObjectDisplay] = useState(null)
-  const [searchResults, setSearchResults] = useState(0) 
+  const [searchResponse, setSearchResponse] = useState(0) 
 
   const blankCharacterObject = [{
     key: "",
@@ -29,7 +29,7 @@ async function handleSearch(e) {
   e.preventDefault()
   console.log("search: ", search)
   await axios.get(`https://swapi.dev/api/${search.attribute}/?search=${search.searchTerm}`)
-  .then(result => setSearchResults(result.data.results))
+  .then(result => setSearchResponse(result.data.results))
   .catch(err => console.log(err))
 }
 
@@ -67,7 +67,7 @@ async function getTableData(attribute) {
     .then(getCharacterData2)
     .catch(err => console.log(err))
     if (detail !== undefined) newTable = ([...newTable, detail])
-    console.log("previous: ", counter)
+    console.log("Element: ", counter)
   }
   setCharacterObjectDisplay(newTable)
 }
@@ -127,7 +127,7 @@ async function getCharacterData3 (copyCharacterObject) {
         handleSearch={handleSearch}
         search={search}
         setSearch ={setSearch}
-        setSearchResults={setSearchResults}
+        setSearchResponse={setSearchResponse}
         />
       <DisplayTable 
       characterObject={characterObjectDisplay === null ? blankCharacterObject : characterObjectDisplay}
@@ -138,7 +138,7 @@ async function getCharacterData3 (copyCharacterObject) {
         />
       <DisplaySearch 
         search={search}
-        searchResults={searchResults}
+        searchResponse={searchResponse}
         />
     </div>
   );
