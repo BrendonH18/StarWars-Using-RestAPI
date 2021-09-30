@@ -5,27 +5,27 @@ const DisplayTable = ({ characters }) => {
   const rows = characters.map(character => {
     return (
       <tr key={character.key}>
-        <td className="text-center">{character.key}</td>
-        <td className="text-center">{character.name}</td>
-        <td className="text-center">{character.birth_year}</td>
-        <td className="text-center">{character.height}</td>
-        <td className="text-center">{character.mass}</td>
-        <td className="text-center">{character.homeworld}</td>
-        <td className="text-center">{character.species}</td>
+        <td>{character.key}</td>
+        <td>{character.name}</td>
+        <td>{character.birth_year}</td>
+        <td>{character.height}</td>
+        <td>{character.mass}</td>
+        <td>{character.homeworld}</td>
+        <td>{character.species}</td>
       </tr>
 )})
 
   return (
-    <table className="table" varient="dark">
+    <table className="table table-striped table-hover text-center">
       <thead>
         <tr>
-          <th className="text-center">#</th>
-          <th className="text-center">Name</th>
-          <th className="text-center">Birthyear</th>
-          <th className="text-center">Height</th>
-          <th className="text-center">Mass</th>
-          <th className="text-center">Homeworld</th>
-          <th className="text-center">Species</th>
+          <th>#</th>
+          <th>Name</th>
+          <th>Birthyear</th>
+          <th>Height</th>
+          <th>Mass</th>
+          <th>Homeworld</th>
+          <th>Species</th>
         </tr>
       </thead>
       <tbody>

@@ -1,23 +1,23 @@
 import React from "react";
 
-const DisplayPageButtons = ({ lowerCharacterNumber , setLowerCharacterNumber}) => {
+const DisplayPageButtons = ({ retrieveStartNumber_Character , setRetrieveStartNumber_Character}) => {
 
   return(
     <div>
-      {lowerCharacterNumber === 0
+      {retrieveStartNumber_Character === 0
         ? <></>
         : <button 
             type="" 
-            onClick={() => setLowerCharacterNumber(lowerCharacterNumber - 10)}
+            onClick={() => setRetrieveStartNumber_Character(retrieveStartNumber_Character - 10)}
             value='previous10'>
-              {"Prev 10 <-----"}
+              <i class="bi bi-chevron-double-left"></i>{"Prev 10"}<i class="bi bi-chevron-double-left"></i>
           </button>
       }
       <button 
         type=""
-        onClick={() => setLowerCharacterNumber(lowerCharacterNumber + 10)}
+        onClick={() => setRetrieveStartNumber_Character(retrieveStartNumber_Character + 10)}
         value='next10'>
-          {"-----> Next 10"}
+          <i class="bi bi-chevron-double-right"></i>{"Next 10"}<i class="bi bi-chevron-double-right"></i>
       </button>
     </div>
   )

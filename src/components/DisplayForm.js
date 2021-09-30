@@ -1,13 +1,16 @@
 import React from "react";
 
-const DisplayForm = ({ handleSearch, setSearch, getCharacters, lowerCharacterNumber }) => {
+const DisplayForm = ({ handleSearch, setSearch, changeCharacters_Table, retrieveStartNumber_Character }) => {
 
   return(
     <form 
       onSubmit={handleSearch}
     >
-    <div className="justify-content-md-center">
-        <div>
+    <br/>
+    <div className = "container">
+    <div className = "row">
+    <div className="">
+        <div className = "col-8 mx-auto">
           <input 
             type="text" 
             placeholder="Search..." 
@@ -18,18 +21,28 @@ const DisplayForm = ({ handleSearch, setSearch, getCharacters, lowerCharacterNum
             required
             />
         </div>
+
+        <br/>
+
+        <div className="row justify-content-center">
         <button 
           type="submit"
+          className="btn btn-primary col-3"
           >
           Submit
         </button>
 
         <button 
           type="button"
-          onClick={() => getCharacters(lowerCharacterNumber + 1, lowerCharacterNumber + 10)}
+          className="btn btn-secondary col-3"
+          onClick={() => changeCharacters_Table(retrieveStartNumber_Character + 1, retrieveStartNumber_Character + 10)}
           >
           Clear Results
         </button>
+        </div>
+        <br/>
+      </div>
+      </div>
       </div>
       </form>
   )

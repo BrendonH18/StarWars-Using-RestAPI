@@ -8,54 +8,48 @@ import axios from 'axios';
 
 function App() {
   const [search, setSearch] = useState('')
-  const [lowerCharacterNumber, setLowerCharacterNumber] = useState(0)
+  const [retrieveStartNumber_Character, setRetrieveStartNumber_Character] = useState(0)
   const [characters, setCharacters] = useState([])
 
-// I think this is my issue
 useEffect(() => {
-  getCharacters(lowerCharacterNumber + 1, lowerCharacterNumber + 10)
-},[lowerCharacterNumber])
+  changeCharacters_Table(retrieveStartNumber_Character + 1, retrieveStartNumber_Character + 10)
+},[retrieveStartNumber_Character])
 
-async function getCharacters(startNumber, endNumber) {
-  let lookupNumber = startNumber
+async function changeCharacters_Table(startNumber, endNumber) {
+  let characterNumber = startNumber
   let promises = []
-  let characters = []
   for (let i = 0; i < endNumber - startNumber + 1; i++) {
-    promises.push(getData(`https://swapi.dev/api/people/${lookupNumber}`))
-    lookupNumber += 1
+    promises.push(fetchData(`https://swapi.dev/api/people/${characterNumber}`))
+    characterNumber += 1
   }
-  await Promise.allSettled(promises).then(results => results.forEach(async result => {
-    const data = await organizeData(result)  
-    characters.push(data)
-    }
-  ))
-  // Why is the log data different than the State data?
-  console.log("Characters: ", characters)
-  setCharacters(characters)
+  Promise.allSettled(promises).then(results => {
+    setCharacters([])
+    results.forEach(async result => {
+      const data = await editCharacterData(result)  
+      setCharacters(prevState => [...prevState, data])
+      }
+    )
+  })
 }
 
 async function handleSearch(e) {
   e.preventDefault()
-  let characters = []
-  const results = await getData(`https://swapi.dev/api/people/?search=${search}`, "results")
+  const results = await fetchData(`https://swapi.dev/api/people/?search=${search}`, "results")
+  setCharacters([])
   results.forEach(async result => {
-    const data = await organizeData(result, true)
-    characters.push(data)
+    const data = await editCharacterData(result, true)
+    setCharacters(prevState => [...prevState, data])
   })
-
-  // Why is the log data different than the State data?
-  console.log("Search: ", characters)
-  setCharacters(characters)
 }
 
-const getData = async (URL, item1 = null) => {
+const fetchData = async (URL, item1 = null) => {
   let response = await axios.get(URL);
   let returnData = response['data']
   if (item1 !== null) returnData = response['data'][item1]
   return returnData
 }
 
-const organizeData = async (result, isSearch = false) => {
+const editCharacterData = async (result, isSearch = false) => {
   if(result.status === "fulfilled" || isSearch === true) {
     let data
     isSearch 
@@ -69,9 +63,9 @@ const organizeData = async (result, isSearch = false) => {
     character.birth_year = data.birth_year
     character.height = data.height
     character.mass = data.mass
-    character.homeworld = await getData(data.homeworld,"name")
+    character.homeworld = await fetchData(data.homeworld,"name")
     if(Array.isArray(data.species) && data.species.length > 0) {
-      character.species = await getData(data.species,"name")
+      character.species = await fetchData(data.species,"name")
     } else {
       character.species = "Human"
     }
@@ -84,21 +78,21 @@ const organizeData = async (result, isSearch = false) => {
 }
 
   return (
-    <div>
+    <div id="App">
       <DisplayHeader />
       <DisplayForm 
         handleSearch={handleSearch}
         search={search}
         setSearch ={setSearch}
-        getCharacters={getCharacters}
-        lowerCharacterNumber={lowerCharacterNumber}
+        changeCharacters_Table={changeCharacters_Table}
+        retrieveStartNumber_Character={retrieveStartNumber_Character}
         />
       <DisplayTable 
-      characters={characters}
+        characters={characters}
         />
       <DisplayPageButtons 
-        lowerCharacterNumber={lowerCharacterNumber}
-        setLowerCharacterNumber={setLowerCharacterNumber}  
+        retrieveStartNumber_Character={retrieveStartNumber_Character}
+        setRetrieveStartNumber_Character={setRetrieveStartNumber_Character}  
         />
     </div>
   );
