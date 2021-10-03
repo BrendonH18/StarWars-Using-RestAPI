@@ -18,7 +18,7 @@ const DisplayTable = ({ characters }) => {
   return (
     <table className="table table-striped table-hover text-center">
       <thead>
-        <tr>
+        <tr key="headers">
           <th>#</th>
           <th>Name</th>
           <th>Birthyear</th>

@@ -1,10 +1,13 @@
 import React from "react";
 
-const DisplayForm = ({ handleSearch, setSearch, changeCharacters_Table, retrieveStartNumber_Character }) => {
+const DisplayForm = ({ handleSearch, setSearch, changeCharacters_Table, characterId, showSearchResults, setShowSearchResults }) => {
 
   return(
     <form 
-      onSubmit={handleSearch}
+      onSubmit={(e) => {
+        e.preventDefault()
+        setShowSearchResults(true)
+      }}
     >
     <br/>
     <div className = "container">
@@ -17,7 +20,9 @@ const DisplayForm = ({ handleSearch, setSearch, changeCharacters_Table, retrieve
             name="search" 
             id="search" 
             className="form-control"
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => {
+              setSearch(e.target.value);
+            }}
             required
             />
         </div>
@@ -35,7 +40,7 @@ const DisplayForm = ({ handleSearch, setSearch, changeCharacters_Table, retrieve
         <button 
           type="button"
           className="btn btn-secondary col-3"
-          onClick={() => changeCharacters_Table(retrieveStartNumber_Character + 1, retrieveStartNumber_Character + 10)}
+          onClick={(e) => setShowSearchResults(false)}
           >
           Clear Results
         </button>
