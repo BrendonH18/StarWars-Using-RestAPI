@@ -89,11 +89,8 @@ const fetchData = async (URL, item1 = null) => {
     <div id="App">
       <DisplayHeader />
       <DisplayForm 
-        search={search}
         setSearch ={setSearch}
-        showSearchResults={showSearchResults}
         setShowSearchResults={setShowSearchResults}
-        characterId={characterId}
         />
       <DisplayTable 
         characters={characters}

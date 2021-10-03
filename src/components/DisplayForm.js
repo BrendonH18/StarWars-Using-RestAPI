@@ -1,6 +1,6 @@
 import React from "react";
 
-const DisplayForm = ({ handleSearch, setSearch, changeCharacters_Table, characterId, showSearchResults, setShowSearchResults }) => {
+const DisplayForm = ({ setSearch, setShowSearchResults }) => {
 
   return(
     <form 
