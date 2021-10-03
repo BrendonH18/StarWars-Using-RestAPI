@@ -4,23 +4,27 @@ Second app using React. Demonstrates conceptual knowledge of key React features 
 
 ## Personal Note
 
-At first, React posed a significant challenge. After struggling to initiate the boilerplate app using React's tutorial and deploy it using Heroku, I took some time to look over the code and find useful patterns. The end result was functional and implemented as many "best practices" as possible. I can see how React could be used in a variety of circumstances.   
+As my second app using React, I used the StarWars API at https://swapi.dev/ to practice asynchronous coding principles and response handling. My major growth moments relate to State and Promises. In addition to asynchronous code, I also decided to use function-based components whereas my last app used class-based components. The different syntax caused some initial concerns, but I'm glad I stuck with it until the end. 
 
 ## Summary
 
 [See the Live Render](https://starwarsapidemobhall.herokuapp.com/)
 
-![image](https://user-images.githubusercontent.com/80381428/133524139-f078753a-89e2-4aa9-8740-a18113e57dd1.png)
+![image](https://user-images.githubusercontent.com/80381428/135774144-11921b69-5ea6-4ef7-bcc9-38051610cac7.png)
 
-- This app use React to structure component elements and render information in real time. It also utilizes local storage to save data between instances.
+- This app use React to organize and render data acquired through nested API requests.
+- Data is shared bidirectionally between React components.
+- Future ideas: 
+  - Expand the search feature to include more resources (People, films, planets, etc.)
+  - Allow the table to dynamically expand columns to accomodate new data.
 
 - This project is a good example of:
 
 FUNCTIONS:
+ - API call/response handling
  - Import
  - Lifecycle
-   - componentDidMount()
-   - componentDidUpdate()
+   - useEffect()
  - State/Props
 
 CONCEPTS:
@@ -38,73 +42,3 @@ CONCEPTS:
 
 ## Author
 Brendon Hall - Full Stack Software Developer [LinkedIn](https://www.linkedin.com/in/brendonphall/)
-
-
-## Other React Scripts
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
