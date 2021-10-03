@@ -1,10 +1,10 @@
 # Star Wars with React and Restful API
 
-Second app using React. Demonstrates conceptual knowledge of key React features while utilizing a Restful API.
+Second app using the React library that demonstrates knowledge of key React features and makes a Restful API.
 
 ## Personal Note
 
-As my second app using React, I used the StarWars API at https://swapi.dev/ to practice asynchronous coding principles and response handling. My major growth moments relate to State and Promises. In addition to asynchronous code, I also decided to use function-based components whereas my last app used class-based components. The different syntax caused some initial concerns, but I'm glad I stuck with it until the end. 
+As my second app using React, I used the StarWars API at https://swapi.dev/ to practice asynchronous coding principles and response handling. My major growth moments relate to State and Promises. In addition to asynchronous code, I decided use function-based components whereas my last app used class-based components. The different syntax caused some initial concerns, but I'm glad I stuck with it until the end. 
 
 ## Summary
 
